@@ -19,7 +19,7 @@ class RegisterPage extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.9,
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: const <Widget>[
                   Logo(
                     titulo: 'Registro',
                   ),
@@ -29,7 +29,7 @@ class RegisterPage extends StatelessWidget {
                     subTitle: '¿Tienes Cuenta?',
                     Title: '¡Inicia Sesión!',
                   ),
-                  const SizedBox(height: 5),
+                  SizedBox(height: 5),
                   Text('Términos y condiciones de uso',
                       style: TextStyle(fontWeight: FontWeight.w400))
                 ]),
@@ -41,7 +41,7 @@ class RegisterPage extends StatelessWidget {
 }
 
 class _Form extends StatefulWidget {
-  _Form({Key? key}) : super(key: key);
+  const _Form({Key? key}) : super(key: key);
 
   @override
   State<_Form> createState() => __FormState();
@@ -55,8 +55,8 @@ class __FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
-      padding: EdgeInsets.symmetric(horizontal: 50),
+      margin: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: <Widget>[
           CustomInput(

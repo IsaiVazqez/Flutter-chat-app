@@ -19,7 +19,7 @@ class Loginpage extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.9,
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: const <Widget>[
                   Logo(
                     titulo: 'Messenger',
                   ),
@@ -40,7 +40,7 @@ class Loginpage extends StatelessWidget {
 }
 
 class _Form extends StatefulWidget {
-  _Form({Key? key}) : super(key: key);
+  const _Form({Key? key}) : super(key: key);
 
   @override
   State<_Form> createState() => __FormState();
@@ -53,8 +53,8 @@ class __FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 40),
-      padding: EdgeInsets.symmetric(horizontal: 50),
+      margin: const EdgeInsets.only(top: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: <Widget>[
           CustomInput(
