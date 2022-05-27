@@ -1,7 +1,7 @@
-import 'package:chat/features/usuarios/pages/usuarios_page.dart';
 import 'package:flutter/material.dart';
 
-import 'package:chat/features/home/pages/chat_pages.dart';
+import 'package:chat/features/chat/pages/chat_pages.dart';
+import 'package:chat/features/usuarios/pages/usuarios_page.dart';
 import 'package:chat/features/loading/pages/loading_page.dart';
 import 'package:chat/features/login/pages/login_page.dart';
 import 'package:chat/features/register/pages/register.dart';
