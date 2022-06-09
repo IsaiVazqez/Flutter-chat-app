@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:chat/routes/routes.dart';
-import 'domain/bloc/auth_service.dart';
+import 'package:chat/core/bloc/auth_service.dart';
 
 void main() => runApp(MyApp());
 

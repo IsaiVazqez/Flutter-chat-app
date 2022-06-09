@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:chat/features/login/domain/entities/login_response.dart';
 import 'package:chat/features/usuarios/domain/entities/usuario.dart';
-import 'package:chat/domain/repositories/enviroment.dart';
+import 'package:chat/features/login/data/model/login_response.dart';
+import 'package:chat/core/enviroments/enviroment.dart';
 
 class AuthService with ChangeNotifier {
   Usuario? usuario;
@@ -53,6 +53,35 @@ class AuthService with ChangeNotifier {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future register(String nombre, String email, String password) async {
+    this.autenticando = true;
+
+    final data = {'nombre': nombre, 'email': email, 'password': password};
+
+    final uri = Uri.parse('${Enviroment.apiUrl}/login/new');
+
+    final resp = await http.post(uri,
+        body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
+    print(resp.body);
+
+    this.autenticando = false;
+
+    if (resp.statusCode == 200) {
+      final loginResponse = loginresponseFromJson(resp.body);
+      this.usuario = loginResponse.usuario;
+
+      await this._guardarToken(loginResponse.token);
+      return true;
+    } else {
+      final respBody = jsonDecode(resp.body);
+      List<String> erroresMsg = [];
+      for (var item in (respBody['errors']).values) {
+        erroresMsg.add(item['msg']);
+      }
+      return erroresMsg.join(", ");
     }
   }
 

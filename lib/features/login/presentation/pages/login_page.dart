@@ -2,11 +2,11 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chat/features/login/presentation/notifiers/show_alert.dart';
-import 'package:chat/domain/bloc/auth_service.dart';
-import 'package:chat/features/login/widgets/boton_azul.dart';
-import 'package:chat/features/login/widgets/custom_input.dart';
-import 'package:chat/features/login/widgets/labels_input.dart';
+import 'package:chat/core/widgets/boton_azul.dart';
+import 'package:chat/core/widgets/custom_input.dart';
+import 'package:chat/core/widgets/labels_input.dart';
 import 'package:chat/features/login/widgets/logo_login.dart';
+import 'package:chat/core/bloc/auth_service.dart';
 
 class Loginpage extends StatelessWidget {
   const Loginpage({Key? key}) : super(key: key);
@@ -89,7 +89,7 @@ class __FormState extends State<_Form> {
                       Navigator.pushReplacementNamed(context, 'usuarios');
                     } else {
                       // Mostara alerta
-                      showAlert(context, 'Login incorrecto',
+                      mostrarAlerta(context, 'Login incorrecto',
                           'Revise sus credenciales');
                     }
                   },

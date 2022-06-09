@@ -1,9 +1,12 @@
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import 'package:chat/features/login/widgets/boton_azul.dart';
-import 'package:chat/features/login/widgets/custom_input.dart';
-import 'package:chat/features/login/widgets/labels_input.dart';
 import 'package:chat/features/login/widgets/logo_login.dart';
+import 'package:chat/core/bloc/auth_service.dart';
+import 'package:chat/core/widgets/boton_azul.dart';
+import 'package:chat/core/widgets/custom_input.dart';
+import 'package:chat/core/widgets/labels_input.dart';
+import 'package:chat/features/login/presentation/notifiers/show_alert.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -54,6 +57,8 @@ class __FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+
     return Container(
       margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -79,7 +84,25 @@ class __FormState extends State<_Form> {
           ),
           BotonAzull(
             text: 'Ingrese',
-            onPressed: () {},
+            onPressed: authService.autenticando
+                ? () => {}
+                : () async {
+                    print(nameCtrol.text);
+                    print(emailCtrol.text);
+                    print(passCtrl.text);
+                    final registroOk = await authService.register(
+                        nameCtrol.text.trim(),
+                        emailCtrol.text.trim(),
+                        passCtrl.text.trim());
+
+                    if (registroOk == true) {
+                      //  TODO: Conectar socket server
+                      Navigator.pushReplacementNamed(context, 'usuarios');
+                    } else {
+                      mostrarAlerta(context, 'Registro incorrecto',
+                          registroOk.toString());
+                    }
+                  },
           ),
           const SizedBox(height: 5),
         ],

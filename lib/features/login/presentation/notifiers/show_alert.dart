@@ -1,37 +1,36 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-showAlert(BuildContext context, String titulo, String subtile) {
+mostrarAlerta(BuildContext context, String titulo, String subtitulo) {
   if (Platform.isAndroid) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(titulo),
-        content: Text(subtile),
-        actions: <Widget>[
-          MaterialButton(
-            child: Text('Ok'),
-            elevation: 5,
-            textColor: Colors.blue,
-            onPressed: () => Navigator.pop(context),
-          )
-        ],
-      ),
-    );
-    showCupertinoDialog(
+    return showDialog(
         context: context,
-        builder: (_) => CupertinoAlertDialog(
+        builder: (_) => AlertDialog(
               title: Text(titulo),
-              content: Text(subtile),
+              content: Text(subtitulo),
               actions: <Widget>[
-                CupertinoDialogAction(
-                  isDefaultAction: true,
-                  child: Text('Ok'),
-                  onPressed: () => Navigator.pop(context),
-                )
+                MaterialButton(
+                    child: Text('Ok'),
+                    elevation: 5,
+                    textColor: Colors.blue,
+                    onPressed: () => Navigator.pop(context))
               ],
             ));
   }
+
+  showCupertinoDialog(
+      context: context,
+      builder: (_) => CupertinoAlertDialog(
+            title: Text(titulo),
+            content: Text(subtitulo),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text('Ok'),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          ));
 }

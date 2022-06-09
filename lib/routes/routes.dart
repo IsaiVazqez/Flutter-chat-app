@@ -4,7 +4,7 @@ import 'package:chat/features/chat/presentation/pages/chat_pages.dart';
 import 'package:chat/features/login/presentation/pages/login_page.dart';
 import 'package:chat/features/usuarios/pages/usuarios_page.dart';
 import 'package:chat/features/loading/pages/loading_page.dart';
-import 'package:chat/features/register/pages/register.dart';
+import 'package:chat/features/register/presentation/pages/register_page.dart';
 
 final Map<String, Widget Function(BuildContext)> appRoutes = {
   'usuarios': (_) => UsuariosPage(),
