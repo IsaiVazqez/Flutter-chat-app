@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import 'package:chat/features/login/presentation/notifiers/show_alert.dart';
 import 'package:chat/domain/bloc/auth_service.dart';
 import 'package:chat/features/login/widgets/boton_azul.dart';
 import 'package:chat/features/login/widgets/custom_input.dart';
@@ -54,6 +55,8 @@ class __FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+
     return Container(
       margin: const EdgeInsets.only(top: 40),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -73,13 +76,23 @@ class __FormState extends State<_Form> {
           ),
           BotonAzull(
             text: 'Ingrese',
-            onPressed: () {
-              print(emailCtrol.text);
-              print(passCtrl.text);
-              final authService =
-                  Provider.of<AuthService>(context, listen: false);
-              authService.login(emailCtrol.text, passCtrl.text);
-            },
+            onPressed: authService.autenticando
+                ? () => {}
+                : () async {
+                    FocusScope.of(context).unfocus();
+
+                    final loginOk = await authService.login(
+                        emailCtrol.text.trim(), passCtrl.text.trim());
+
+                    if (loginOk) {
+                      // TODO: Conectar a nuestro socket server
+                      Navigator.pushReplacementNamed(context, 'usuarios');
+                    } else {
+                      // Mostara alerta
+                      showAlert(context, 'Login incorrecto',
+                          'Revise sus credenciales');
+                    }
+                  },
           )
         ],
       ),
