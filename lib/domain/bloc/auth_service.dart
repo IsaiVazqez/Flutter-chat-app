@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:chat/features/login/domain/entities/login_response.dart';
 import 'package:chat/features/usuarios/domain/entities/usuario.dart';
 import 'package:chat/domain/repositories/enviroment.dart';
-import 'package:chat/features/login/domain/models/login_response.dart';
 
 class AuthService with ChangeNotifier {
   Usuario? usuario;
