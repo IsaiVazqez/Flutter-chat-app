@@ -1,5 +1,7 @@
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import 'package:chat/domain/bloc/auth_service.dart';
 import 'package:chat/features/login/widgets/boton_azul.dart';
 import 'package:chat/features/login/widgets/custom_input.dart';
 import 'package:chat/features/login/widgets/labels_input.dart';
@@ -71,7 +73,13 @@ class __FormState extends State<_Form> {
           ),
           BotonAzull(
             text: 'Ingrese',
-            onPressed: () {},
+            onPressed: () {
+              print(emailCtrol.text);
+              print(passCtrl.text);
+              final authService =
+                  Provider.of<AuthService>(context, listen: false);
+              authService.login(emailCtrol.text, passCtrl.text);
+            },
           )
         ],
       ),
