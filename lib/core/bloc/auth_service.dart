@@ -12,6 +12,7 @@ class AuthService with ChangeNotifier {
   bool _autenticando = false;
 
   //instanciar el storage para almacenar el TOKEN
+  // ignore: unnecessary_new
   final _storage = new FlutterSecureStorage();
 
   bool get autenticando => this._autenticando;
@@ -41,7 +42,6 @@ class AuthService with ChangeNotifier {
 
     final resp = await http.post(uri,
         body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
-    print(resp.body);
 
     this.autenticando = false;
 
@@ -65,7 +65,6 @@ class AuthService with ChangeNotifier {
 
     final resp = await http.post(uri,
         body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
-    print(resp.body);
 
     this.autenticando = false;
 
@@ -82,6 +81,25 @@ class AuthService with ChangeNotifier {
         erroresMsg.add(item['msg']);
       }
       return erroresMsg.join(", ");
+    }
+  }
+
+  Future<bool> isLoggedIn() async {
+    final uri = Uri.parse('${Enviroment.apiUrl}/login/new');
+
+    final token = await this._storage.read(key: 'token') ?? '';
+
+    final resp = await http.get(uri,
+        headers: {'Content-Type': 'application/json', 'x-token': token});
+
+    if (resp.statusCode == 200) {
+      final loginResponse = loginresponseFromJson(resp.body);
+      this.usuario = loginResponse.usuario;
+      await this._guardarToken(loginResponse.token);
+      return true;
+    } else {
+      this.logout();
+      return false;
     }
   }
 

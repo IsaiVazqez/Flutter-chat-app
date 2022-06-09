@@ -1,6 +1,9 @@
-import 'package:chat/features/usuarios/domain/entities/usuario.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import 'package:chat/core/bloc/auth_service.dart';
+import 'package:chat/features/usuarios/domain/entities/usuario.dart';
 
 class UsuariosPage extends StatefulWidget {
   const UsuariosPage({Key? key}) : super(key: key);
@@ -20,18 +23,25 @@ class _UsuariosPageState extends State<UsuariosPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    final usuario = authService.usuario;
+
     return Scaffold(
         appBar: AppBar(
-          title: Text('Perfil', style: TextStyle(color: Colors.black87)),
+          title: Text(usuario?.nombre ?? 'Sin Nombre',
+              style: const TextStyle(color: Colors.black87)),
           elevation: 1,
           backgroundColor: Colors.white,
           leading: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.exit_to_app, color: Colors.black87),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, 'login');
+              AuthService.deleteToken();
+            },
+            icon: const Icon(Icons.exit_to_app, color: Colors.black87),
           ),
           actions: <Widget>[
             Container(
-              margin: EdgeInsets.only(right: 10),
+              margin: const EdgeInsets.only(right: 10),
               child: Icon(Icons.check_circle, color: Colors.blue[400]),
             )
           ],
@@ -50,9 +60,9 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   ListView _listViewUsuarios() {
     return ListView.separated(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       itemBuilder: (_, i) => _usuarioListTile(usuarios[i]),
-      separatorBuilder: (_, i) => Divider(),
+      separatorBuilder: (_, i) => const Divider(),
       itemCount: usuarios.length,
     );
   }
@@ -75,7 +85,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   _cargarUsuarios() async {
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
