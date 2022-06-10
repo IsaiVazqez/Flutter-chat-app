@@ -10,6 +10,7 @@ import 'package:chat/core/enviroments/enviroment.dart';
 class AuthService with ChangeNotifier {
   Usuario? usuario;
   bool _autenticando = false;
+  final token = AuthService.getToken();
 
   //instanciar el storage para almacenar el TOKEN
   // ignore: unnecessary_new
@@ -24,6 +25,7 @@ class AuthService with ChangeNotifier {
   //Getters para el token
   static Future<String?> getToken() async {
     final _storage = new FlutterSecureStorage();
+
     final token = await _storage.read(key: 'token');
     return token;
   }
@@ -85,9 +87,8 @@ class AuthService with ChangeNotifier {
   }
 
   Future<bool> isLoggedIn() async {
-    final uri = Uri.parse('${Enviroment.apiUrl}/login/new');
-
     final token = await this._storage.read(key: 'token') ?? '';
+    final uri = Uri.parse('${Enviroment.apiUrl}/login/new');
 
     final resp = await http.get(uri,
         headers: {'Content-Type': 'application/json', 'x-token': token});
@@ -108,6 +109,6 @@ class AuthService with ChangeNotifier {
   }
 
   Future logout() async {
-    await _storage.delete(key: 'key');
+    await _storage.delete(key: 'token');
   }
 }

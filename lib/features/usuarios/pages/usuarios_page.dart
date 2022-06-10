@@ -36,7 +36,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
           backgroundColor: Colors.white,
           leading: IconButton(
             onPressed: () {
-              socketService.disconect();
+              socketService.disconnect();
               Navigator.pushReplacementNamed(context, 'login');
               AuthService.deleteToken();
             },
@@ -45,7 +45,9 @@ class _UsuariosPageState extends State<UsuariosPage> {
           actions: <Widget>[
             Container(
               margin: const EdgeInsets.only(right: 10),
-              child: Icon(Icons.check_circle, color: Colors.blue[400]),
+              child: (socketService.serverStatus == ServerStatus.Online)
+                  ? Icon(Icons.check_circle, color: Colors.blue[400])
+                  : Icon(Icons.offline_bolt, color: Colors.red),
             )
           ],
         ),
