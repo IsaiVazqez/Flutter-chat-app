@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+import 'package:chat/core/enviroments/enviroment.dart';
+
 enum ServerStatus { Online, Offline, Connecting }
 
 class SocketService with ChangeNotifier {
@@ -12,14 +14,12 @@ class SocketService with ChangeNotifier {
 
   Function get emit => _socket.emit;
 
-  SocketService() {
-    this._initConfig();
-  }
-  void _initConfig() {
+  void connect() {
     // Dart client
-    _socket = IO.io('http://192.168.100.15:3001', {
+    _socket = IO.io(Enviroment.socketUrl, {
       'transports': ['websocket'],
       'autoConnect': true,
+      'forceNew': true
     });
     _socket.onConnect((_) {
       print('connect');
@@ -30,5 +30,9 @@ class SocketService with ChangeNotifier {
       this._serverStatus = ServerStatus.Offline;
       notifyListeners();
     });
+  }
+
+  void disconect() {
+    this._socket.disconnect();
   }
 }

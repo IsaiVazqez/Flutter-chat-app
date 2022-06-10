@@ -7,6 +7,7 @@ import 'package:chat/core/widgets/custom_input.dart';
 import 'package:chat/core/widgets/labels_input.dart';
 import 'package:chat/features/login/widgets/logo_login.dart';
 import 'package:chat/core/bloc/auth_service.dart';
+import 'package:chat/core/bloc/socket_service.dart';
 
 class Loginpage extends StatelessWidget {
   const Loginpage({Key? key}) : super(key: key);
@@ -56,6 +57,7 @@ class __FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    final socketService = Provider.of<SocketService>(context);
 
     return Container(
       margin: const EdgeInsets.only(top: 40),
@@ -85,7 +87,7 @@ class __FormState extends State<_Form> {
                         emailCtrol.text.trim(), passCtrl.text.trim());
 
                     if (loginOk) {
-                      // TODO: Conectar a nuestro socket server
+                      socketService.connect();
                       Navigator.pushReplacementNamed(context, 'usuarios');
                     } else {
                       // Mostara alerta
