@@ -10,10 +10,7 @@ import 'package:chat/core/enviroments/enviroment.dart';
 class AuthService with ChangeNotifier {
   Usuario? usuario;
   bool _autenticando = false;
-  final token = AuthService.getToken();
 
-  //instanciar el storage para almacenar el TOKEN
-  // ignore: unnecessary_new
   final _storage = new FlutterSecureStorage();
 
   bool get autenticando => this._autenticando;
@@ -22,10 +19,9 @@ class AuthService with ChangeNotifier {
     notifyListeners();
   }
 
-  //Getters para el token
+  // Getters del token de forma estática
   static Future<String?> getToken() async {
     final _storage = new FlutterSecureStorage();
-
     final token = await _storage.read(key: 'token');
     return token;
   }
@@ -41,7 +37,6 @@ class AuthService with ChangeNotifier {
     final data = {'email': email, 'password': password};
 
     final uri = Uri.parse('${Enviroment.apiUrl}/login');
-
     final resp = await http.post(uri,
         body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
 
@@ -52,6 +47,7 @@ class AuthService with ChangeNotifier {
       this.usuario = loginResponse.usuario;
 
       await this._guardarToken(loginResponse.token);
+
       return true;
     } else {
       return false;
@@ -64,7 +60,6 @@ class AuthService with ChangeNotifier {
     final data = {'nombre': nombre, 'email': email, 'password': password};
 
     final uri = Uri.parse('${Enviroment.apiUrl}/login/new');
-
     final resp = await http.post(uri,
         body: jsonEncode(data), headers: {'Content-Type': 'application/json'});
 
@@ -73,23 +68,19 @@ class AuthService with ChangeNotifier {
     if (resp.statusCode == 200) {
       final loginResponse = loginresponseFromJson(resp.body);
       this.usuario = loginResponse.usuario;
-
       await this._guardarToken(loginResponse.token);
+
       return true;
     } else {
       final respBody = jsonDecode(resp.body);
-      List<String> erroresMsg = [];
-      for (var item in (respBody['errors']).values) {
-        erroresMsg.add(item['msg']);
-      }
-      return erroresMsg.join(", ");
+      return respBody['msg'];
     }
   }
 
   Future<bool> isLoggedIn() async {
     final token = await this._storage.read(key: 'token') ?? '';
-    final uri = Uri.parse('${Enviroment.apiUrl}/login/new');
 
+    final uri = Uri.parse('${Enviroment.apiUrl}/login/renew');
     final resp = await http.get(uri,
         headers: {'Content-Type': 'application/json', 'x-token': token});
 

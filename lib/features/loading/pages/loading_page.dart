@@ -24,7 +24,7 @@ class LoadingPage extends StatelessWidget {
   }
 
   Future checkLoginState(BuildContext context) async {
-    final socketService = Provider.of<SocketService>(context);
+    final socketService = Provider.of<SocketService>(context, listen: false);
 
     final authService = Provider.of<AuthService>(context, listen: false);
 
@@ -32,14 +32,12 @@ class LoadingPage extends StatelessWidget {
 
     if (autenticado) {
       socketService.connect();
-      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
           context,
           PageRouteBuilder(
               pageBuilder: (_, __, ___) => const UsuariosPage(),
               transitionDuration: const Duration(milliseconds: 0)));
     } else {
-      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
           context,
           PageRouteBuilder(

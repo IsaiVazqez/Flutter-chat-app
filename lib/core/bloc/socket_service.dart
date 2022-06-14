@@ -17,6 +17,7 @@ class SocketService with ChangeNotifier {
 
   void connect() async {
     final token = await AuthService.getToken();
+
     // Dart client
     this._socket = IO.io(Enviroment.socketUrl, {
       'transports': ['websocket'],
@@ -24,6 +25,7 @@ class SocketService with ChangeNotifier {
       'forceNew': true,
       'extraHeaders': {'x-token': token}
     });
+
     this._socket.on('connect', (_) {
       this._serverStatus = ServerStatus.Online;
       notifyListeners();
